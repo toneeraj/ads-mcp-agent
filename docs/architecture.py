@@ -5,40 +5,40 @@ Run: python docs/architecture.py
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-TITLE = "ads-mcp-agent — architecture, v0.2"
-FOOTER = ("Every box in “what it writes” answers one of the "
-          "experiment's questions. Everything else exists to produce it.")
+TITLE = "ads-mcp-agent — reference architecture, v0.3"
+FOOTER = ("Each record in the persistence layer answers one evaluation "
+          "question; the remaining layers exist to produce those records.")
 
 # (heading, verb into this band, fill, stroke, boxes[(title, line1, line2)])
 LAYERS = [
-    ("PEOPLE", None, "#f3effa", "#7b5ea7", [
-        ("You", "ask in plain words,", "approve every write"),
+    ("ACTOR", None, "#f3effa", "#7b5ea7", [
+        ("Owner", "issues requests and", "authorises every write"),
     ]),
-    ("WHAT YOU OPEN", "opens", "#eef3fb", "#2f4a7a", [
-        ("Chat page", "ask, see the agent's plan,", "say yes or no"),
-        ("Write log page", "every change, before", "and after values"),
+    ("PRESENTATION", "uses", "#eef3fb", "#2f4a7a", [
+        ("Chat interface", "requests, proposed actions,", "approval decisions"),
+        ("Change history", "applied writes with", "prior and new values"),
     ]),
-    ("WHAT RUNS", "drives", "#eef6f1", "#2e6b4a", [
-        ("Agent loop", "sends the chat and tool list,", "gets back a tool call"),
-        ("Confirm gate", "holds a write until", "you say yes"),
-        ("Cap check", "refuses a write", "above the spend cap"),
-        ("MCP client", "lists tools,", "calls the one chosen"),
+    ("APPLICATION", "invokes", "#eef6f1", "#2e6b4a", [
+        ("Agent orchestrator", "model call with tool", "catalogue; tool selection"),
+        ("Approval gate", "suspends writes pending", "explicit authorisation"),
+        ("Spend guard", "rejects writes that", "exceed the spend cap"),
+        ("MCP client", "tool discovery and", "invocation"),
     ]),
-    ("WHAT IT WRITES", "writes", "#fdf6ea", "#a8780f", [
-        ("Write log", "what changed, from what,", "on whose yes"),
-        ("Call log", "each ask, the tools it used,", "and how many calls"),
-        ("Tool gaps", "asks no tool", "could answer"),
+    ("PERSISTENCE", "records", "#fdf6ea", "#a8780f", [
+        ("Write audit", "change, prior value,", "authorising approval"),
+        ("Invocation log", "request, tools used,", "API call count"),
+        ("Coverage gaps", "requests with no", "matching tool"),
     ]),
-    ("HOW IT REACHES AMAZON", "sends and reads through", "#f6f3ee", "#7d6440", [
-        ("Endpoint switch", "fake server or", "Amazon's NA endpoint"),
-        ("Token refresher", "swaps the refresh token", "for an hourly access token"),
-        ("Secrets", "held by the host,", "never in the repo"),
+    ("INTEGRATION", "connects through", "#f6f3ee", "#7d6440", [
+        ("Endpoint selector", "simulator or Amazon", "North America endpoint"),
+        ("Token manager", "refresh-token exchange,", "hourly access tokens"),
+        ("Secret store", "host-managed;", "excluded from source"),
     ]),
-    ("EVERYTHING ELSE", "talks to", "#f3f4f6", "#6b7280", [
-        ("Claude API", "the model", ""),
-        ("Fake MCP server", "same tool shapes,", "no Amazon needed"),
-        ("Amazon Ads MCP", "the real tools,", "once approved"),
-        ("Login with Amazon", "issues access", "tokens"),
+    ("EXTERNAL SERVICES", "calls", "#f3f4f6", "#6b7280", [
+        ("Claude API", "language model", ""),
+        ("Ads MCP simulator", "local server mirroring", "the tool contracts"),
+        ("Amazon Ads MCP", "hosted server; requires", "API approval"),
+        ("Login with Amazon", "OAuth authorisation", "server"),
     ]),
 ]
 
